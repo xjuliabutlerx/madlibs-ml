@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "madlibs-ml"
+  site-url: "https://xjuliabutlerx.github.io/madlibs-ml"
+  description: "A MadLibs library using Hugging Face ML models"
+  repo-branch: master
+  repo-url: "https://github.com/xjuliabutlerx/madlibs-ml"

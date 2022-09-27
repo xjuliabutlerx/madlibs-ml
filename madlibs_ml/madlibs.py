@@ -1,5 +1,6 @@
 """
-Selects a random template to
+Generates prompts and controls the MadLibs game. Publishes results to an HTML
+file and opens it in the user's preferred web browser.
 """
 
 import checklist
@@ -29,26 +30,73 @@ def auto():
     generator = pipeline("text-generation", model="distilgpt2")
 
     PROMPT_OUTPUT = generator(USER_PROMPT,
-                            max_length = 200,
+                            max_length = 1000,
                             num_return_sequences = 1, )
 
     print()
-    print(PROMPT_OUTPUT[0].get('generated_text'))
 
-print("\nWelcome to MadLibs ML!\n")
+    PROMPT_OUTPUT = PROMPT_OUTPUT[0].get('generated_text')
 
-GAME_MODE = int(input("""How would you like to play?
-        0 for auto
-        1 for default
+    length = len(PROMPT_OUTPUT)
+    for char in reversed(range(length)):
+        if PROMPT_OUTPUT[char - 1] == '.':
+            PROMPT_OUTPUT = PROMPT_OUTPUT[0:char]
+            break
+
+    returnResults(PROMPT_OUTPUT)
+
+def default():
+    prompt = ""
+    return
+
+def returnResults(result):
+    timestr = time.strftime("%Y_%m_%d-%H_%M_%S_%p")
+    print("Time:", timestr)
+    file = 'results_'+timestr+'.html'
+    print("Test File Name:", file)
+
+    # to open/create a new html file in the write mode
+    resultsFile = open('results_'+timestr+'.html', 'w')
+
+    # the html code which will go in the file results_<date and time>.html
+    html_template = """
+    <html>
+    <head>
+        <title>MadLibs ML Results</title>
+        <link rel="stylesheet" href="resultStyles.css"/>
+    </head>
+    <body>
+        <h3>MadLibs ML Results</h3>
+        <br></br>
+        <p>""" + result + """</p>
+    </body>
+    </html>
+    """
+    # writing the code into the file
+    resultsFile.write(html_template)
+
+    # close the file
+    resultsFile.close()
+
+    # 1st method how to open html files in chrome using
+    filename = 'file:///'+os.getcwd()+'/' + file
+    webbrowser.open_new_tab(filename)
+
+def main():
+    print("\nWelcome to MadLibs ML!\n")
+
+    GAME_MODE = int(input("""How would you like to play?
+            0 for auto
+            1 for default
 """))
 
-if GAME_MODE == 0:
-    print("\nGame Mode: Auto\n")
-    auto()
-elif GAME_MODE == 1:
-    print("\nGame Mode: Default\n")
-else:
-    sys.exit("\nERROR: Invalid game mode\n")
+    if GAME_MODE == 0:
+        print("\nGame Mode: Auto\n")
+        auto()
+    elif GAME_MODE == 1:
+        print("\nGame Mode: Default\n")
+    else:
+        sys.exit("\nERROR: Invalid game mode\n")
 
 """
 
@@ -59,38 +107,8 @@ ret = editor.template('{first_name} is {a:profession} from {country}.',
 print(np.random.choice(ret.data, 3))
 resStr = np.random.choice(ret.data, 3)[0]
 
-print()
-
-timestr = time.strftime("%Y_%m_%d-%H_%M_%S_%p")
-print("Time:", timestr)
-file = 'results_'+timestr+'.html'
-print("Test File Name:", file)
-
-# to open/create a new html file in the write mode
-resultsFile = open('results_'+timestr+'.html', 'w')
-
 """
 
-# the html code which will go in the file results_<date and time>.html
-html_template = """
-<html>
-<head>
-    <title>MadLibs ML Results</title>
-</head>
-<body>
-    <p>resStr</p>
-
-</body>
-</html>
-"""
-# writing the code into the file
-"""
-resultsFile.write(html_template)
-
-# close the file
-resultsFile.close()
-
-# 1st method how to open html files in chrome using
-filename = 'file:///'+os.getcwd()+'/' + file
-webbrowser.open_new_tab(filename)
-"""
+if __name__ == '__main__':
+    os.environ["TOKENIZERS_PARALLELISM"] = "false"
+    main()

@@ -5,4 +5,4 @@ d = { 'settings': { 'branch': 'master',
                 'doc_host': 'https://xjuliabutlerx.github.io',
                 'git_url': 'https://github.com/xjuliabutlerx/madlibs-ml',
                 'lib_path': 'madlibs_ml'},
-  'syms': {'madlibs_ml.core': {'madlibs_ml.core.foo': ('core.html#foo', 'madlibs_ml/core.py')}}}
+  'syms': {'madlibs_ml.core': {'madlibs_ml.core.foo': ('core.html#foo', 'madlibs_ml/core.py')}, 'madlibs_ml.madlibs': {}}}

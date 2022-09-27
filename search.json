@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "madlibs-ml",
+    "section": "",
+    "text": "To run the game, run the following command:\npython madlibs.py\nWhen the game first loads, select a game mode by typing - 0 for auto (uses Hugging Face transformer and pipeline to generate text) - 1 for default (uses Hugging Face transformer, pipeline, and checklist editor to make a funny prompt)"
+  },
+  {
+    "objectID": "core.html",
+    "href": "core.html",
+    "title": "core",
+    "section": "",
+    "text": "source\n\nfoo\n\n foo ()"
+  }
+]
